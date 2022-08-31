@@ -32,7 +32,29 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+}
+
+.field {
+  text-align: center;
+  width: 20%;
+  margin: auto;
+}
+
+.field button {
+  padding: 1em;
+  width: 100%;
+  font-size: 1em;
+  background-color: #5fa8d3;
+  color: white;
+  border: 1px solid #1b4965;
+  cursor: pointer;
 }
