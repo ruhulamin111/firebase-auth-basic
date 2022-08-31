@@ -19,23 +19,33 @@ function App() {
       })
   }
 
+  const signOut = () => {
+    signOut(auth)
+      .then(result => {
+        const user = result.user;
+        setUsers(user)
+      })
+      .then(error => {
+        console.error(error)
+      })
+  }
+
 
   return (
     <div className='container'>
       <h2>Firebase Authentication</h2>
       <div className='field'>
-        <button onClick={googleSignIn}>Google Sing In</button>
-        <br />
-        <br />
-        <button>Github Sign In</button>
-        <br />
-        <br />
-        <button>Facebook Sign in</button>
+        {users.uid ? <button onClick={signOut}>Sign Out</button> :
+          <>
+            <button onClick={googleSignIn}>Google Sing In</button>
+            <button>Github Sign In</button>
+            <button>Facebook Sign in</button>
+          </>}
       </div>
       <div className=''>
-        <h4>User: {users.displayName}</h4>
-        <h4>Email: {users.email}</h4>
-        <img src={users.photoURL} alt="" />
+        <h4>{users.displayName ? `User : ${users.displayName}` : ''}</h4>
+        <h4>{users.email ? `Email : ${users.email}` : ''}</h4>
+        <img src={users.photoURL ? users.photoURL : 'Not available'} alt="" />
 
       </div>
 
