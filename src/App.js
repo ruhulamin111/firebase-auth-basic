@@ -1,5 +1,5 @@
 import './App.css';
-import { GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from 'react';
 import auth from './firebase.init';
 
@@ -41,6 +41,29 @@ function App() {
       })
   }
 
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleEmail = (event) => {
+    const email = event.target.value;
+    setEmail(email)
+  }
+  const handlePassword = (event) => {
+    const password = event.target.value;
+    setPassword(password)
+  }
+
+  const createUser = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(result => {
+        const users = result.user;
+        setUsers(users)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
+
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -55,6 +78,19 @@ function App() {
   return (
     <div className='container'>
       <h2>Firebase Authentication</h2>
+      <div className='form-field'>
+        <form>
+          <label htmlFor="name">Name</label>
+          <input type="text" name="name" id="" placeholder='Enter name' required />
+          <label htmlFor="email">Email</label>
+          <input onBlur={handleEmail} type="email" name="email" id="" placeholder='Enter email' required />
+          <label htmlFor="name">Password</label>
+          <input onBlur={handlePassword} type="password" name="password" id="" placeholder='Enter password' required />
+          <br />
+          <input className='btn' onClick={createUser} type="button" value="Sign Up" />
+        </form>
+
+      </div>
       <div className='field'>
         {users.uid ? <button onClick={handleSignOut}>Sign Out</button> :
           <>
@@ -67,7 +103,7 @@ function App() {
       <div className=''>
         <h4>{users.displayName ? `User : ${users.displayName}` : ''}</h4>
         <h4>{users.email ? `Email : ${users.email}` : ''}</h4>
-        <img src={users.photoURL ? users.photoURL : 'Not available'} alt="" />
+        <img src={users.photoURL} alt="" />
       </div>
     </div>
   );
