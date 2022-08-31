@@ -44,6 +44,7 @@ function App() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+
   const handleEmail = (event) => {
     const email = event.target.value;
     setEmail(email)
@@ -54,14 +55,20 @@ function App() {
   }
 
   const createUser = () => {
+
     createUserWithEmailAndPassword(auth, email, password)
       .then(result => {
-        const users = result.user;
-        setUsers(users)
+        const user = result.user;
+        setUsers(user)
+
       })
       .catch(error => {
         console.error(error)
       })
+    setEmail('')
+    setPassword('')
+
+
   }
 
   const handleSignOut = () => {
@@ -79,15 +86,15 @@ function App() {
     <div className='container'>
       <h2>Firebase Authentication</h2>
       <div className='form-field'>
-        <form>
+        <form onSubmit={createUser}>
           <label htmlFor="name">Name</label>
-          <input type="text" name="name" id="" placeholder='Enter name' required />
+          <input type="text" name="name" placeholder='Enter name' required />
           <label htmlFor="email">Email</label>
-          <input onBlur={handleEmail} type="email" name="email" id="" placeholder='Enter email' required />
+          <input onBlur={handleEmail} type="email" name="email" placeholder='Enter email' required />
           <label htmlFor="name">Password</label>
-          <input onBlur={handlePassword} type="password" name="password" id="" placeholder='Enter password' required />
+          <input onBlur={handlePassword} type="password" name="password" placeholder='Enter password' required />
           <br />
-          <input className='btn' onClick={createUser} type="button" value="Sign Up" />
+          <input className='btn' type="submit" value='Sign Up' />
         </form>
 
       </div>
