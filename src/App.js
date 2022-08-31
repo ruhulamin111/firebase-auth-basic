@@ -1,5 +1,5 @@
 import './App.css';
-import { GoogleAuthProvider, GithubAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { useState } from 'react';
 import auth from './firebase.init';
 
@@ -8,6 +8,7 @@ function App() {
   const [users, setUsers] = useState({});
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
 
   const handleGoogleSignIn = () => {
     signInWithPopup(auth, googleProvider)
@@ -21,6 +22,16 @@ function App() {
   }
   const handleGithubSignIn = () => {
     signInWithPopup(auth, githubProvider)
+      .then(result => {
+        const user = result.user;
+        setUsers(user)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
+  const handleFacebookSignIn = () => {
+    signInWithPopup(auth, facebookProvider)
       .then(result => {
         const user = result.user;
         setUsers(user)
@@ -49,17 +60,15 @@ function App() {
           <>
             <button onClick={handleGoogleSignIn}>Google Sing In</button>
             <button onClick={handleGithubSignIn}>Github Sign In</button>
-            <button>Facebook Sign in</button>
+            <button onClick={handleFacebookSignIn}>Facebook Sign in</button>
           </>}
       </div>
+
       <div className=''>
         <h4>{users.displayName ? `User : ${users.displayName}` : ''}</h4>
         <h4>{users.email ? `Email : ${users.email}` : ''}</h4>
         <img src={users.photoURL ? users.photoURL : 'Not available'} alt="" />
-
       </div>
-
-
     </div>
   );
 }
